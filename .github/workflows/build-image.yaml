@@ -39,20 +39,19 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           platforms: ${{ github.event.inputs.platforms }}
-          build-args:
-            - NODE_VERSION=${{ github.event.inputs.node-version }}
-            - KLOTHO_VERSION=${{ github.event.inputs.klotho-version }}
+          build-args: |
+            NODE_VERSION=${{ github.event.inputs.node-version }}
+            KLOTHO_VERSION=${{ github.event.inputs.klotho-version }}
 
       - name: Push (${{ github.event.inputs.klotho-version }})
-        if: ${{ github.event.inputs.klotho-version != latest }}
+        if: ${{ github.event.inputs.klotho-version != 'latest' }}
         uses: docker/build-push-action@v3
         with:
           platforms: ${{ github.event.inputs.platforms }}
-          build-args:
-            - NODE_VERSION=${{ github.event.inputs.node-version }}
-            - KLOTHO_VERSION=${{ github.event.inputs.node-version }}
-          tags:
-            - klothoplatform/klotho:${{ github.event.inputs.klotho-version }}
+          build-args: |
+            NODE_VERSION=${{ github.event.inputs.node-version }}
+            KLOTHO_VERSION=${{ github.event.inputs.klotho-version }}
+          tags: klothoplatform/klotho:${{ github.event.inputs.klotho-version }}
           push: true
 
       - name: Push (latest)
@@ -60,9 +59,8 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           platforms: ${{ github.event.inputs.platforms }}
-          build-args:
-            - NODE_VERSION=${{ github.event.inputs.node-version }}
-            - KLOTHO_VERSION=${{ github.event.inputs.node-version }}
-          tags:
-            - klothoplatform/klotho:latest
+          build-args: |
+            NODE_VERSION=${{ github.event.inputs.node-version }}
+            KLOTHO_VERSION=${{ github.event.inputs.klotho-version }}
+          tags: klothoplatform/klotho:latest
           push: true
