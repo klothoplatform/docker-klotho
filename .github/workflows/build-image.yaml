@@ -1,0 +1,65 @@
+name: Build and Push klothoplatform/klotho to Docker Hub
+
+on:
+  workflow_dispatch:
+    inputs:
+      klotho-version:
+        description: The version of klotho that will be included in the built image (e.g. v1.0.0, latest)
+        default: latest
+      node-version:
+        description: The version of Node to base this image on (should be an existing Node image tag)
+        default: lts
+      platforms:
+        descriptions: Comma separated list of platforms the image will be built form (e.g. linux/amd64,linux/arm64)
+        default: linux/amd64
+      latest:
+        description: Should the built image(s) be pushed with the 'latest' tag?
+        default: true
+        type: boolean
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build
+        uses: docker/build-push-action@v3
+        with:
+          platforms: ${{ github.event.inputs.platforms }}
+          build-args:
+            - NODE_VERSION=${{ github.event.inputs.node-version }}
+            - KLOTHO_VERSION=${{ github.event.inputs.klotho-version }}
+
+      - name: Push (${{ github.event.inputs.klotho-version }})
+        if: ${{ github.event.inputs.klotho-version != latest }}
+        uses: docker/build-push-action@v3
+        with:
+          platforms: ${{ github.event.inputs.platforms }}
+          build-args:
+            - NODE_VERSION=${{ github.event.inputs.node-version }}
+            - KLOTHO_VERSION=${{ github.event.inputs.node-version }}
+          tags:
+            - klothoplatform/klotho:${{ github.event.inputs.klotho-version }}
+          push: true
+
+      - name: Push (latest)
+        if: ${{ github.event.inputs.latest }}
+        uses: docker/build-push-action@v3
+        with:
+          platforms: ${{ github.event.inputs.platforms }}
+          build-args:
+            - NODE_VERSION=${{ github.event.inputs.node-version }}
+            - KLOTHO_VERSION=${{ github.event.inputs.node-version }}
+          tags:
+            - klothoplatform/klotho:latest
+          push: true
