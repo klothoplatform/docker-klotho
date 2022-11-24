@@ -5,7 +5,19 @@ ARG KLOTHO_VERSION=latest
 ARG TARGETARCH
 
 # Install Dependencies
-RUN apt-get update; apt-get install curl unzip groff less libc6 -y
+RUN apt-get update; \
+    apt-get install -y \
+      curl \
+      unzip \
+      groff \
+      less \
+      libc6 \
+      ca-certificates \
+      gnupg \
+      lsb-release
+
+# Install Docker
+RUN curl -fsSL https://get.docker.com | sh
 
 # Install Pulumi CLI
 RUN curl -fsSL https://get.pulumi.com | sh; \

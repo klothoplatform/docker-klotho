@@ -23,11 +23,11 @@ Use these shell aliases to easily invoke Klotho or its dependencies in your term
 Run the commands below to add these aliases to your shell environment.
 
 ```shell
-alias docker-klotho='docker run --platform linux/amd64 --rm -it -w /usr/src/project -v ~/.klotho:/root/.klotho -v $(pwd):/usr/src/project klothoplatform/klotho:latest klotho'
-alias docker-pulumi='docker run --platform linux/amd64 --rm -it -w /usr/src/project -v $(pwd):/usr/src/project klothoplatform/klotho:latest pulumi'
-alias docker-npm='docker run --platform linux/amd64 --rm -it -w /usr/src/project -v $(pwd):/usr/src/project klothoplatform/klotho:latest npm'
+alias docker-klotho='docker run --platform linux/amd64 --rm -it -w /usr/src/project -v ${HOME}/.klotho:/root/.klotho -v $(pwd):/usr/src/project klothoplatform/klotho:latest klotho'
+alias docker-pulumi='docker run --platform linux/amd64 --rm -it -w /usr/src/project -v ${HOME}/.pulumi:/root/.pulumi -v ${HOME}/.aws:/root/.aws -v $(pwd):/usr/src/project -v /var/run/docker.sock:/var/run/docker.sock klothoplatform/klotho:latest pulumi'
+alias docker-npm='docker run --platform linux/amd64 --rm -it -w /usr/src/project -v ${HOME}/.npm:/root/.npm -v $(pwd):/usr/src/project klothoplatform/klotho:latest npm'
 alias docker-tsc='docker run --platform linux/amd64 --rm -it -w /usr/src/project -v $(pwd):/usr/src/project klothoplatform/klotho:latest npx tsc'
-alias docker-aws='docker run  --platform linux/amd64 --rm -it -w /usr/src/project -v $(pwd):/usr/src/project -v ~/.aws:/root/.aws klothoplatform/klotho:latest aws'
+alias docker-aws='docker run --platform linux/amd64 --rm -it -w /usr/src/project -v $(pwd):/usr/src/project -v ${HOME}/.aws:/root/.aws klothoplatform/klotho:latest aws' 
 ```
 To make these aliases persistent, add them to your shell profile (e.g. `.bashrc`, `.profile`, etc.).
 
