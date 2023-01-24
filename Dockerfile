@@ -33,8 +33,8 @@ RUN export AWS_CLI_ARCH="x86_64"; \
     ./aws/install
 
 # Install Klotho
-RUN export KLOTHO_URL="https://github.com/klothoplatform/klotho/releases/download/${KLOTHO_VERSION}/klotho_linux_${TARGETARCH}"; \
-    if [ "${KLOTHO_VERSION}" -eq "latest" ]; then export KLOTHO_URL="https://github.com/klothoplatform/klotho/releases/latest/download/klotho_linux_${TARGETARCH}";  fi;  \
+RUN export KLOTHO_URL="http://srv.klo.dev/update/latest/linux/$(uname -m)?stream=pro:${KLOTHO_VERSION}"; \
+    if [ "${KLOTHO_VERSION}" -eq "latest" ]; then export KLOTHO_URL="http://srv.klo.dev/update/latest/linux/$(uname -m)?stream=pro:latest";  fi;  \
     cd /bin; \
     echo $KLOTHO_URL; \
     curl -fsSL "${KLOTHO_URL}" -o klotho; \
